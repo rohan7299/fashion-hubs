@@ -1,0 +1,56 @@
+{% extends '../../header.html' %}
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">{{title}}</h1>
+        </div>
+        <div class="container-fluid">
+            <form id="subcategoryForm" class="row g-3" action="" method="post">
+                {% csrf_token %}
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="categoryName">Select Category</label>
+                        {% comment %} <input type="text" name="categoryName" id="categoryName" class="form-control" placeholder="Enter Category Name" autofocus> {% endcomment %}
+                        {{form.category}}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="categoryName">Enter Sub Category Name</label>
+                        {% comment %} <input type="text" name="categoryName" id="categoryName" class="form-control" placeholder="Enter Category Name" autofocus> {% endcomment %}
+                        {{form.subCategoryName}}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="categoryName">Enter Subcategory Type</label>
+                        {% comment %} <input type="text" name="categoryName" id="categoryName" class="form-control" placeholder="Enter Category Name" autofocus> {% endcomment %}
+                        {{form.subCategoryType}}
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+<script>
+    $(document).ready(function(){
+        $('#subcategoryForm').validate({
+            rules:{
+                category:'required',
+                subCategoryName:'required',
+                subCategoryType:'required'
+            },
+            messages:{
+                category:"Please Select Category",
+                subCategoryName:"Please Enter Sub Category Name",
+                subCategoryType:"Please Enter Sub Category Type"
+            }
+        });
+    });
+</script>
+
+{% endblock %}

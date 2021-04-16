@@ -1,0 +1,59 @@
+{% extends '../../header.html' %}
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">{{title}}</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group me-2">
+                    <a type="button" class="btn btn-outline-primary" href="create/"><i class="fas fa-plus-square"></i> ADD</a>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <table id="example" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>
+                            Sub Category Name
+                        </th>
+                        <th>
+                            Sub Category Type
+                        </th>
+                        <th>
+                            Category Name
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for obj in subCategories %}
+                        <tr>
+                            <td>
+                                {{obj.subCategoryName}}
+                            </td>
+                            <td>
+                                {{obj.subCategoryType}}
+                            </td>
+                            <td>
+                                {{obj.category.categoryName}}
+                            </td>
+                            <td>
+                                <a href="{{obj.edit}}"><i class="far fa-edit"></i> <a> &nbsp;
+                                <a href="{{obj.deleteURL}}"><i class="far fa-trash-alt text-danger"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<script>
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+</script>
+{% endblock %}

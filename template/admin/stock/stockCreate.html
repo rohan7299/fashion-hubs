@@ -1,0 +1,102 @@
+{% extends '../../header.html' %}
+{% block content %}
+{% load static %}
+<main>
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">{{title}}</h1>
+        </div>
+        <div class="container-fluid">
+            <form id="brandForm" class="row g-3" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="categoryName">Select Color</label>
+                        {% comment %} <input type="text" name="categoryName" id="categoryName" class="form-control" placeholder="Enter Category Name" autofocus> {% endcomment %}
+                        {{form.color}}
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-check">
+                        <label for="categoryName">Enter Size</label>
+                        {% comment %} <input type="text" name="categoryName" id="categoryName" class="form-control" placeholder="Enter Category Name" autofocus> {% endcomment %}
+                            <br>
+                          
+                        {% for obj in checkbox %}
+                            <input type="checkbox" class="form-check-input" name="size" id="size" value="{{obj}}">
+                            <label class="form-check-label" for="size">
+                                {{obj}}
+                            </label>
+                            <input type="number" class="form-control" name="{{obj}}" id="stock" placeholder="Enter Number of Stocks">
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-12 mb-5">
+                     <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+<script>
+    $(document).ready(function(){
+        $('#brandForm').validate({
+            rules:{
+                subCategory:'required',
+                brand:'required',
+                productName:'required',
+                productImage:'required',
+                productDescription:'required',
+                suplier:'required',
+                wholesalePrice:'required',
+                salesPrice:'required'
+            },
+            messages:{
+                subCategory:"Please Select Sub Category",
+                brand:"Please Select Brands",
+                productName:"Please Enter Product Name",
+                productImage:"Please Select Product Images",
+                productDescription:"Please Enter Product Description",
+                suplier:"Please Select supplier",
+                wholesalePrice:"Please Enter Wholesale Price",
+                salesPrice:"Please Enter Sales Price"
+            }
+        });
+        $("#id_productImages").change(function() {
+            readURL(this);
+        });
+    });
+var aray = [];
+function readURL(input){
+    
+    //$.each(input.files,function(index,value){
+    //    aray.push(value);
+    //})
+    //loaddata(aray);
+}
+function loaddata(aray){
+    $('#result').html("");
+    $.each(aray,function(index,value){
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var img = $('<img id="dynamic" onclick="gets('+index+')" class="m-1" height="150" width="150"> ');
+            img.attr('src', e.target.result);
+            img.appendTo('#result');
+        }
+        reader.readAsDataURL(value);
+    });
+    alert($('input[name="productImages"]').get(0).files.length);
+}
+function gets(a){
+    //var images = document.getElementsByName('productImages');
+    //$.each(images,function(index,value){
+    //    alert(value);
+    //});
+    //alert($('#id_productImages').val());
+    //alert(a);
+    aray.splice(a,1);
+    $('#id_productImages').val(aray);
+    loaddata(aray);
+}
+</script>
+{% endblock %}

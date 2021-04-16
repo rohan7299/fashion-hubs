@@ -1,0 +1,63 @@
+{% extends '../../header.html' %}
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">{{title}}</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group me-2">
+                    <a type="button" class="btn btn-outline-primary" href="create/"><i class="fas fa-plus-square"></i> ADD</a>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <table id="example" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>
+                            Suplier Name
+                        </th>
+                        <th>
+                            Suplier Contact
+                        </th>
+                        <th>
+                            Suplier Address
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for obj in supliers %}
+                        <tr>
+                            <td>
+                                {{obj.suplierName}}
+                            </td>
+                            <td>
+                                {{obj.suplierContact}}
+                            </td>
+                            <td>
+                                {{obj.suplierAddress}}
+                            </td>
+                            <td>
+                                <form method="post" action="delete/">
+                                    {% csrf_token %}
+                                    <a href="{{obj.edit}}" class="btn btn-link btn-sm p-0"><i class="far fa-edit fa-2x"></i> <a> &nbsp;
+                                    <input type="hidden" value="{{obj.id}}" name="brandId">
+                                    <button type="submit" class="btn btn-link btn-sm p-0"> <i class="far fa-trash-alt text-danger fa-2x"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<script>
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+</script>
+{% endblock %}
