@@ -20,5 +20,6 @@ from .views import index,dashboard
 urlpatterns = [
     path('djangoadmin/', admin.site.urls),
     path('admin/', include('admins.urls')),
+    path('', include('customer.urls')),
     path('dashboard', dashboard),
 ]

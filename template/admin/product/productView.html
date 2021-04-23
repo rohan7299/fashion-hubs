@@ -4,6 +4,13 @@
     <div class="container-fluid">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">{{title}}</h1>
+            {% if messages %}
+            {% comment %} <ul class="messages"> {% endcomment %}
+            {% for message in messages %}
+            <p class="h4 text-danger" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+            {% comment %} </ul> {% endcomment %}
+            {% endif %}
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group me-2">
                     <a type="button" class="btn btn-outline-primary" href="create/"><i class="fas fa-plus-square"></i> ADD</a>
@@ -15,13 +22,16 @@
                 <thead>
                     <tr>
                         <th>
-                            Suplier Name
+                            Product Name
                         </th>
                         <th>
-                            Suplier Contact
+                            Product Price
                         </th>
                         <th>
-                            Suplier Address
+                            Subcategory
+                        </th>
+                        <th>
+                            Active
                         </th>
                         <th>
                             Action
@@ -29,22 +39,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for obj in supliers %}
+                    {% for obj in products %}
                         <tr>
                             <td>
-                                {{obj.suplierName}}
+                                {{obj.productName}}
                             </td>
                             <td>
-                                {{obj.suplierContact}}
+                                {{obj.salesPrice}}
                             </td>
                             <td>
-                                {{obj.suplierAddress}}
+                                {{obj.subCategory.subCategoryName}}
+                            </td>
+                            <td>
+                                {% if obj.active == True %}
+                                    <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                                    </div>
+                                {% else %}
+                                     <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                                    </div>
+                                {% endif %}
                             </td>
                             <td>
                                 <form method="post" action="delete/">
                                     {% csrf_token %}
+                                    <a href="{{obj.stock}}" class="btn btn-link btn-sm p-0"> <i class="fas fa-database fa-2x"></i> </a> &nbsp;
                                     <a href="{{obj.edit}}" class="btn btn-link btn-sm p-0"><i class="far fa-edit fa-2x"></i> <a> &nbsp;
-                                    <input type="hidden" value="{{obj.id}}" name="brandId">
+                                    <input type="hidden" value="{{obj.id}}" name="productId">
                                     <button type="submit" class="btn btn-link btn-sm p-0"> <i class="far fa-trash-alt text-danger fa-2x"></i></button>
                                 </form>
                             </td>

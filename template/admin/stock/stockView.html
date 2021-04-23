@@ -15,13 +15,16 @@
                 <thead>
                     <tr>
                         <th>
-                            Suplier Name
+                            Product Name
                         </th>
                         <th>
-                            Suplier Contact
+                            Color
                         </th>
                         <th>
-                            Suplier Address
+                            Size
+                        </th>
+                        <th>
+                            Stock
                         </th>
                         <th>
                             Action
@@ -29,22 +32,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for obj in supliers %}
+                    {% for obj in stocks %}
                         <tr>
                             <td>
-                                {{obj.suplierName}}
+                                {{obj.product.productName   }}
                             </td>
                             <td>
-                                {{obj.suplierContact}}
+                                {{ obj.color }}
                             </td>
                             <td>
-                                {{obj.suplierAddress}}
+                                {{obj.size}}
+                            </td>
+                             <td>
+                                {{obj.stock}}
                             </td>
                             <td>
                                 <form method="post" action="delete/">
                                     {% csrf_token %}
                                     <a href="{{obj.edit}}" class="btn btn-link btn-sm p-0"><i class="far fa-edit fa-2x"></i> <a> &nbsp;
-                                    <input type="hidden" value="{{obj.id}}" name="brandId">
+                                    <input type="hidden" value="{{obj.id}}" name="stockId">
                                     <button type="submit" class="btn btn-link btn-sm p-0"> <i class="far fa-trash-alt text-danger fa-2x"></i></button>
                                 </form>
                             </td>

@@ -6,9 +6,7 @@ import os
 import random
 import barcode
 from datetime import datetime
-import cv2
-from pyzbar import pyzbar
-import numpy as np
+from django.contrib import messages
 # Create your views here.
 def dashboard(request):
     return render(request,'dashboard.html',{'title':'Dashboard'})
@@ -46,6 +44,7 @@ def categoryDelete(request,categoryId):
     obj.delete()
     return redirect('/admin/category/')
 
+
 # sub category
 def subCategoryView(request):
     allSubCategory = SubCategoryModel.objects.all()
@@ -74,6 +73,7 @@ def subCategoryDelete(request,subCategoryId):
     obj=get_object_or_404(SubCategoryModel,id=subCategoryId)
     obj.delete()
     return redirect('/admin/subcategory/')
+
 
 #brands
 def brandView(request):
@@ -105,7 +105,8 @@ def brandDelete(request):
         obj.delete()
     return redirect('/admin/brand/')
 
-#Suppliers
+
+# Suppliers
 def suplierView(request):
     obj = SuplierModel.objects.all()
     return render(request,'admin/suplier/suplierView.html',{'title':'Supplier','supliers':obj})
@@ -135,9 +136,11 @@ def suplierDelete(request):
         obj.delete()
     return redirect('/admin/suplier/')
 
-#products
+
+# products
 def productView(request):
-    return render(request,'admin/product/productView.html',{'title':'Products'})
+    obj = ProductModel.objects.all()
+    return render(request,'admin/product/productView.html',{'title':'Products','products':obj})
 
 def productCreate(request):
     form = ProductModelForm(request.POST,request.FILES)
@@ -165,71 +168,59 @@ def productCreate(request):
         return redirect("/admin/product/")
     return render(request,'admin/product/productCreate.html',{'title':'Create Product','form':form})
 
+def productEdit(request,productId):
+    obj = get_object_or_404(ProductModel,id=productId)
+    form = ProductModelForm(request.POST or None,instance=obj)
+    if request.method=="POST":
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            for f in  request.FILES.getlist('productImages'):
+                im = ProductModelImages(product_id=obj.id,productImages=f)
+                im.save()
+            return redirect('/admin/product/')
+    return render(request,'admin/product/productCreate.html',{'title':'Update Product','form':form})
+
+def productDelete(request):
+    if request.method=="POST":
+        try:
+            obj=get_object_or_404(ProductModel,id=request.POST['productId'])
+            obj.delete()
+            objs = ProductModelImages.objects.filter(product=request.POST['productId'])
+            for obj in objs:
+                if os.path.join(settings.BASE_DIR,'static/'+str(obj.productImages)):
+                    os.remove(os.path.join(settings.BASE_DIR,'static/'+str(obj.productImages)))
+                    objs.delete()
+        except:
+            messages.error(request, "Data Cannot Delete!")
+            return redirect('/admin/product/')
+    return redirect('/admin/product/')
+
+
+# stocks
 def stockView(request,productId):
-    return render(request,'admin/stock/stockView.html',{'title':"Stock"})
+    productStock = StockModel.objects.filter(product=productId)
+    return render(request,'admin/stock/stockView.html',{'title':"Stock",'stocks':productStock})
 def stockCreate(request,productId):
     form = StockModelForm(request.POST or None)
     product_obj = get_object_or_404(ProductModel,id=productId)
-    # print(product_obj.subCategory_id)
     subCategory_obj = get_object_or_404(SubCategoryModel,id=product_obj.subCategory_id)
     arr = subCategory_obj.subCategoryType.split(',')
     if request.method == "POST":
         for obj in request.POST.getlist('size'):
             smobj = StockModel(product=product_obj,color=request.POST['color'],size=obj,stock=request.POST[obj])
-            print(smobj)
             smobj.save()
+        return redirect('/admin/product/'+str(productId)+'/stock')
     return render(request,'admin/stock/stockCreate.html',{'title':'Create Stock','form':form,'checkbox':arr})
-def cameraOpen(request):
-    # camera=cv2.VideoCapture(0)
-    # ret, frame = camera.read()
-    # while ret:
-    #     ret,frame = camera.read()
-    #     cv2.imshow('Barcode reader', frame)
-    #     if cv2.waitKey(1) & 0xFF == 27:
-    #         break
-    #     else :
-    #         print("si kbr")
-    # camera.release()
-    # cv2.destroyAllWindows()
-    image = cv2.imread('D:/django/project/static/images/barcode/2727434759915.svg')
-    _, image_thr = cv2.threshold(image, 128, 255, cv2.THRESH_BINARY_INV)
-    # Count non-zero pixels along the rows; get indices, where count exceeds certain threshold (here: 100)
-    row_nz = np.count_nonzero(image_thr, axis=0)
-    idx = np.argwhere(row_nz > 100)
-    # Generate new image, draw lines at found indices
-    image_new = int(np.ones_like(image_thr) * 255)
-    image_new[35:175, idx] = 0
-    cv2.imshow('image_thr', image_thr)
-    cv2.imshow('image_new', image_new)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    # print(os.path.join(settings.BASE_DIR,'static\images\barcode\\2727434759915.svg'))
-    # img = cv2.imread('D:/django/project/static/images/barcode/2727434759915.svg')
-    # detectedBarcodes =pyzbar.decode(img)
-    # if not detectedBarcodes:
-    #     print("Barcode Not Detected or your barcode is blank/corrupted!")
-    # else:
-    #       # Traveres through all the detected barcodes in image
-    #     for barcode in detectedBarcodes:
-    #         # Locate the barcode position in image
-    #         (x, y, w, h) = barcode.rect
-    #         # Put the rectangle in image using 
-    #         # cv2 to heighlight the barcode
-    #         cv2.rectangle(img, (x-10, y-10),
-    #                       (x + w+10, y + h+10), 
-    #                       (255, 0, 0), 2)
-    #         if barcode.data!="":
-    #         # Print the barcode data
-    #             print(barcode.data)
-    #             print(barcode.type)
-    # #Display the image
-    # cv2.imshow("Image", img)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-    # decodeObjects=decode(img)
-    # print(pixels)
-    # for bar in decodeObjects:
-    #     print(bar)
-    # while True:
-    #     _,frame = cap.read()
-    return render(request,'admin/camera/open.html')
+def stockEdit(request,productId,stockId):
+    obj = get_object_or_404(StockModel,id=stockId)
+    form = StockModelForm(request.POST or None,instance=obj)
+    if request.method=="POST":
+        StockModel.objects.filter(id=stockId).update(color=request.POST['color'],size=request.POST['size'],stock=request.POST['stock'])
+        return redirect('/admin/product/'+str(productId)+'/stock')
+    return render(request,'admin/stock/stockUpdate.html',{'title':'Update Stock','form':form})
+def stockDelete(request,productId):
+    if request.method=="POST":
+        obj=get_object_or_404(StockModel,id=request.POST['stockId'])
+        obj.delete()
+        return redirect('/admin/product/'+str(productId)+'/stock')

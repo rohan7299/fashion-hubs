@@ -1,0 +1,18 @@
+HTTrack3.49-2+htsswf+htsjava launched on Thu, 22 Apr 2021 12:16:02 at https://d-themes.com/html/riode/demo2.html +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qwC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "en, *" https://d-themes.com/html/riode/demo2.html -O1 "C:\My Web Sites\riode" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+12:19:52	Error: 	"Not Found" (404) at link https://d-themes.com/html/riode/vendor/owl-carousel/owl.video.play.png (from https://d-themes.com/html/riode/vendor/owl-carousel/owl.carousel.min.css)
+12:19:52	Error: 	"Not Found" (404) at link https://d-themes.com/html/images/nav-prev-shadow.png (from https://d-themes.com/html/riode/vendor/owl-carousel/owl.carousel.min.css)
+12:19:52	Error: 	"Not Found" (404) at link https://d-themes.com/html/images/nav-next-shadow.png (from https://d-themes.com/html/riode/vendor/owl-carousel/owl.carousel.min.css)
+12:19:52	Error: 	"Not Found" (404) at link https://d-themes.com/html/riode/fonts/riode.svg?5gap68 (from https://d-themes.com/html/riode/css/demo2.min.css)
+12:20:02	Error: 	"Not Found" (404) at link https://d-themes.com/html/riode/product-left-sidebar (from https://d-themes.com/html/riode/wishlist.html)
+12:20:03	Error: 	"Not Found" (404) at link https://d-themes.com/html/riode/shop-grid-3col.html (from https://d-themes.com/html/riode/product.html)
+12:20:03	Error: 	"Not Found" (404) at link https://d-themes.com/html/riode/element-banners.html (from https://d-themes.com/html/riode/element-testimonials.html)
+
+HTTrack Website Copier/3.49-2 mirror complete in 4 minutes 1 seconds : 553 links scanned, 545 files written (32129776 bytes overall) [32340172 bytes received at 134191 bytes/sec], 21.2 requests per connection
+(7 errors, 0 warnings, 0 messages)

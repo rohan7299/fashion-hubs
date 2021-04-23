@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'admins',
+    'customer',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR,'static'),
 )
 MEDIA_ROOT = os.path.join(BASE_DIR,'static')
+
+TEMPLATE_CONTEXT_PROCESSORS = ("customer.generic.categories_processor",)
+TEMPLATES[0]['OPTIONS']['context_processors'].append("customer.generic.categories_processor")

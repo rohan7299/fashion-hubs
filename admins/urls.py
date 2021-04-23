@@ -3,8 +3,8 @@ from .views import dashboard,profile,categoryView,categoryCreate,categoryEdit,ca
 from .views import subCategoryView,subCategoryCreate,subCategoryEdit,subCategoryDelete
 from .views import brandView,brandCreate,brandEdit,brandDelete
 from .views import suplierView,suplierCreate,suplierEdit,suplierDelete
-from .views import productView,productCreate
-from .views import stockView,stockCreate,cameraOpen
+from .views import productView,productCreate,productEdit,productDelete
+from .views import stockView,stockCreate,stockEdit,stockDelete
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
@@ -34,9 +34,12 @@ urlpatterns = [
 
     path('product/',productView),
     path('product/create/',productCreate),
+    path('product/<int:productId>/edit/',productEdit),
+    path('product/delete/',productDelete),
 
     path('product/<int:productId>/stock/',stockView),
     path('product/<int:productId>/stock/create/',stockCreate),
+    path('product/<int:productId>/stock/<int:stockId>/edit/',stockEdit),
+    path('product/<int:productId>/stock/delete/',stockDelete),
 
-    path('camera/',cameraOpen),
 ] + static(settings.STATIC_URL,document_root=settings.MEDIA_ROOT)
